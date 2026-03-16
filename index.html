@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Premium Video Recorder</title>
+    
+    <!-- iOS Full Screen Mode Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RecClock">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Status Bar Space for iPhone -->
+        <div class="status-bar-spacer"></div>
+
+        <header>
+            <div class="clock-display" id="clock">00:00:00</div>
+            <div class="recording-indicator" id="recIndicator">
+                <span class="dot"></span>
+                <span class="text">REC</span>
+            </div>
+        </header>
+
+        <main class="camera-viewport">
+            <!-- iPhoneで自動再生・インライン再生するために playsinline, muted, autoplay が必須 -->
+            <video id="preview" autoplay playsinline muted></video>
+            <div class="overlay">
+                <div class="timer" id="recordingTimer">00:00</div>
+            </div>
+        </main>
+
+        <footer class="controls">
+            <div class="control-row">
+                <button id="switchCamera" class="icon-btn" aria-label="Switch Camera">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+                    </svg>
+                </button>
+                
+                <div class="shutter-wrapper">
+                    <button id="shutterBtn" class="shutter-btn"></button>
+                </div>
+
+                <a id="downloadBtn" class="icon-btn hidden" aria-label="Download">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                </a>
+                <div id="dummy" class="icon-btn"></div>
+            </div>
+        </footer>
+
+        <!-- Preview Modal -->
+        <div id="previewModal" class="modal hidden">
+            <div class="modal-content">
+                <video id="recordedVideo" controls></video>
+                <div class="modal-actions">
+                    <button id="closeModal" class="btn-secondary">戻る</button>
+                    <button id="saveVideo" class="btn-primary">保存する</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
