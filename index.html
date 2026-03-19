@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Premium Video Recorder</title>
+    <title>Digital Clock Recorder</title>
     
     <!-- iOS Full Screen Mode Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,62 +11,44 @@
     <meta name="apple-mobile-web-app-title" content="RecClock">
 
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+    
+    <!-- 7セグメントデジタルフォント -->
+    <link href="https://fonts.cdnfonts.com/css/seven-segment" rel="stylesheet">
 </head>
 <body>
     <div class="app-container">
-        <!-- Status Bar Space for iPhone -->
-        <div class="status-bar-spacer"></div>
+        <video id="preview" autoplay playsinline muted></video>
 
-        <header>
-            <div class="clock-display" id="clock">00:00:00</div>
-            <div class="recording-indicator" id="recIndicator">
-                <span class="dot"></span>
-                <span class="text">REC</span>
-            </div>
-        </header>
+        <!-- スタート画面 -->
+        <div id="startScreen" class="overlay">
+            <button id="startButton" class="premium-btn">
+                <span class="btn-text">START RECORDING</span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
 
-        <main class="camera-viewport">
-            <!-- iPhoneで自動再生・インライン再生するために playsinline, muted, autoplay が必須 -->
-            <video id="preview" autoplay playsinline muted></video>
-            <div class="overlay">
-                <div class="timer" id="recordingTimer">00:00</div>
-            </div>
-        </main>
-
-        <footer class="controls">
-            <div class="control-row">
-                <button id="switchCamera" class="icon-btn" aria-label="Switch Camera">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
-                    </svg>
-                </button>
+        <!-- 録画中・時計表示画面 -->
+        <div id="recordingScreen" class="content hidden">
+            <div class="clock-full" id="tapArea">
+                <!-- 各桁を独立したスロットに入れて固定幅にする -->
+                <div class="digit-box main" id="h1">0</div>
+                <div class="digit-box main" id="h2">0</div>
+                <div class="separator main">:</div>
+                <div class="digit-box main" id="m1">0</div>
+                <div class="digit-box main" id="m2">0</div>
                 
-                <div class="shutter-wrapper">
-                    <button id="shutterBtn" class="shutter-btn"></button>
+                <div class="sec-group">
+                    <div class="digit-box sub" id="s1">0</div>
+                    <div class="digit-box sub" id="s2">0</div>
                 </div>
-
-                <a id="downloadBtn" class="icon-btn hidden" aria-label="Download">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                    </svg>
-                </a>
-                <div id="dummy" class="icon-btn"></div>
             </div>
-        </footer>
-
-        <!-- Preview Modal -->
-        <div id="previewModal" class="modal hidden">
-            <div class="modal-content">
-                <video id="recordedVideo" controls></video>
-                <div class="modal-actions">
-                    <button id="closeModal" class="btn-secondary">戻る</button>
-                    <button id="saveVideo" class="btn-primary">保存する</button>
-                </div>
+            <div class="rec-indicator">
+                <div class="rec-dot"></div>
+                REC
             </div>
         </div>
+
+        <div id="statusMsg" class="status-msg hidden">SAVED</div>
     </div>
     <script src="app.js"></script>
 </body>
