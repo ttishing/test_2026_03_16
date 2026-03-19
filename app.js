@@ -2,6 +2,7 @@ let mediaRecorder;
 let recordedChunks = [];
 let stream;
 let lastTap = 0;
+let wakeLock = null;
 
 const videoPreview = document.getElementById('preview');
 const tapArea = document.getElementById('tapArea');
@@ -9,6 +10,26 @@ const statusMsg = document.getElementById('statusMsg');
 const startScreen = document.getElementById('startScreen');
 const recordingScreen = document.getElementById('recordingScreen');
 const startButton = document.getElementById('startButton');
+
+// 1. ウェイクロックの制御（スリープ防止）
+async function requestWakeLock() {
+    try {
+        if ('wakeLock' in navigator) {
+            wakeLock = await navigator.wakeLock.request('screen');
+            console.log('Wake Lock active');
+        }
+    } catch (err) {
+        console.error(`${err.name}, ${err.message}`);
+    }
+}
+
+function releaseWakeLock() {
+    if (wakeLock !== null) {
+        wakeLock.release();
+        wakeLock = null;
+        console.log('Wake Lock released');
+    }
+}
 
 // 桁要素の取得
 const h1 = document.getElementById('h1');
@@ -94,7 +115,7 @@ async function initCamera() {
 }
 
 // 3. 録画制御
-function startRecording() {
+async function startRecording() {
     if (mediaRecorder && mediaRecorder.state === 'recording') return;
     recordedChunks = [];
 
@@ -102,6 +123,9 @@ function startRecording() {
     startScreen.classList.add('hidden');
     recordingScreen.classList.remove('hidden');
     tapArea.classList.add('recording');
+
+    // スリープ防止をリクエスト
+    await requestWakeLock();
 
     // キャンバスからストリームを取得 (30fps)
     const canvasStream = canvas.captureStream(30);
@@ -135,6 +159,9 @@ function startRecording() {
             recordingScreen.classList.add('hidden');
             startScreen.classList.remove('hidden');
             tapArea.classList.remove('recording');
+
+            // スリープ防止を解除
+            releaseWakeLock();
         };
 
         mediaRecorder.start(1000);
@@ -144,6 +171,7 @@ function startRecording() {
         recordingScreen.classList.add('hidden');
         startScreen.classList.remove('hidden');
         tapArea.classList.remove('recording');
+        releaseWakeLock();
     }
 }
 
