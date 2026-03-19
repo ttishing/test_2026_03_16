@@ -97,30 +97,14 @@ body {
     cursor: pointer;
 }
 
-.rec-indicator {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.2rem;
-    color: #ff4b2b;
-    font-family: sans-serif;
-    font-weight: bold;
-    animation: pulse 1.5s infinite;
+/* 録画中にコロンを点滅させる */
+.recording #separator {
+    animation: blink 1s infinite;
 }
 
-.rec-dot {
-    width: 12px;
-    height: 12px;
-    background-color: #ff4b2b;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #ff4b2b;
-}
-
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.3; }
-    100% { opacity: 1; }
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }
 
 /* 各スロットの幅を固定にすることで、「1」になってもズレないようにする */

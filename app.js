@@ -101,6 +101,7 @@ function startRecording() {
     // UI切り替え
     startScreen.classList.add('hidden');
     recordingScreen.classList.remove('hidden');
+    tapArea.classList.add('recording');
 
     // キャンバスからストリームを取得 (30fps)
     const canvasStream = canvas.captureStream(30);
@@ -133,6 +134,7 @@ function startRecording() {
             // UIを元に戻す
             recordingScreen.classList.add('hidden');
             startScreen.classList.remove('hidden');
+            tapArea.classList.remove('recording');
         };
 
         mediaRecorder.start(1000);
@@ -141,6 +143,7 @@ function startRecording() {
         // エラー時はUIを戻す
         recordingScreen.classList.add('hidden');
         startScreen.classList.remove('hidden');
+        tapArea.classList.remove('recording');
     }
 }
 
